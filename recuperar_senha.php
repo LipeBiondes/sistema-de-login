@@ -1,4 +1,8 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $email = $_POST["email"];
 
@@ -32,11 +36,46 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Verifique se o código de recuperação foi inserido com sucesso
     if ($stmt->affected_rows > 0) {
-      // Enviando o código para o e-mail do usuário
 
-      // Redirecione o usuário para a página de confirmação
-      header("Location: confirmacao.php?email=$email");
-      exit();
+      // Enviando o código para o e-mail do usuário
+      require '../sistema-de-login/PHPMailer/src/Exception.php';
+      require '../sistema-de-login/PHPMailer/src/PHPMailer.php';
+      require '../sistema-de-login/PHPMailer/src/SMTP.php';
+
+      // Configurar o PHPMailer
+      $mail = new PHPMailer(true);
+
+      try {
+        // Configurações do servidor de e-mail (exemplo: Gmail)
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';  // Servidor SMTP
+        $mail->SMTPAuth = true;
+        $mail->Username = 'seu_email@gmail.com';  // Seu endereço de e-mail
+        $mail->Password = 'sua_senha';  // Sua senha de e-mail
+        $mail->SMTPSecure = 'ssl';
+        $mail->Port = 465;
+
+        // Remetente
+        $mail->setFrom('seu_email@gmail.com', 'Seu Nome');
+
+        // Destinatário
+        $mail->addAddress($email);  // Email do destinatário
+        $mail->isHTML(true);
+
+        // Assunto e corpo do e-mail
+        $mail->Subject = 'Código de Recuperação de Senha';
+        $mail->Body = 'Seu código de recuperação é: ' . $hashedCode;
+
+        // Enviar o e-mail
+        $mail->send();
+
+        // Redirecione o usuário para a página de confirmação
+        header("Location: confirmacao.php?email=$email");
+        exit();
+      } catch (Exception $e) {
+        $error_message = 'Erro ao enviar o e-mail: ' . $mail->ErrorInfo;
+      }
     } else {
       // Se a atualização não teve êxito, exiba uma mensagem de erro
       $error_message = "Ocorreu um erro ao gerar o código de recuperação. Tente novamente.";
