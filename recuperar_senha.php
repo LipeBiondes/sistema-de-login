@@ -3,6 +3,10 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+require '../sistema-de-login/PHPMailer/src/Exception.php';
+require '../sistema-de-login/PHPMailer/src/PHPMailer.php';
+require '../sistema-de-login/PHPMailer/src/SMTP.php';
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $email = $_POST["email"];
 
@@ -20,8 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // O e-mail não foi encontrado no banco de dados, exiba uma mensagem de erro
     $error_message = "E-mail não registrado. Por favor, verifique o e-mail fornecido.";
   } else {
-    // O e-mail foi encontrado, continue com o processo de recuperação
-
     // Gerando um código de recuperação único
     $code = bin2hex(random_bytes(8));
 
@@ -38,40 +40,34 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($stmt->affected_rows > 0) {
 
       // Enviando o código para o e-mail do usuário
-      require '../sistema-de-login/PHPMailer/src/Exception.php';
-      require '../sistema-de-login/PHPMailer/src/PHPMailer.php';
-      require '../sistema-de-login/PHPMailer/src/SMTP.php';
 
-      // Configurar o PHPMailer
       $mail = new PHPMailer(true);
 
       try {
-        // Configurações do servidor de e-mail (exemplo: Gmail)
-        $mail->SMTPDebug = 0;
+        //Server settings
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';  // Servidor SMTP
-        $mail->SMTPAuth = true;
-        $mail->Username = 'seu_email@gmail.com';  // Seu endereço de e-mail
-        $mail->Password = 'sua_senha';  // Sua senha de e-mail
-        $mail->SMTPSecure = 'ssl';
-        $mail->Port = 465;
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'turmabes2020@gmail.com';
+        $mail->Password   = 'mpuo gjpn mxmp wztb';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port       = 465;
 
-        // Remetente
-        $mail->setFrom('seu_email@gmail.com', 'Seu Nome');
+        //Recipients
+        $mail->setFrom('turmabes2020@gmail.com', 'Turma de Bes 2020');
+        $mail->addAddress($email);     //Add a recipient
 
-        // Destinatário
-        $mail->addAddress($email);  // Email do destinatário
+
+        //Content
         $mail->isHTML(true);
-
         // Assunto e corpo do e-mail
-        $mail->Subject = 'Código de Recuperação de Senha';
-        $mail->Body = 'Seu código de recuperação é: ' . $hashedCode;
+        $mail->Subject = 'Codigo de Recuperacao de Senha';
+        $mail->Body = 'Seu código de recuperação é: ' . $code;
 
-        // Enviar o e-mail
         $mail->send();
 
         // Redirecione o usuário para a página de confirmação
-        header("Location: confirmacao.php?email=$email");
+        header("Location: confirmar_codigo_recuperacao.php?email=$email");
         exit();
       } catch (Exception $e) {
         $error_message = 'Erro ao enviar o e-mail: ' . $mail->ErrorInfo;
