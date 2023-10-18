@@ -1,0 +1,154 @@
+/* Estilos para o corpo da página */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Estilos para o contêiner principal */
+.container {
+  width: 300px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Estilos para mensagens de erro */
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Estilos para o título principal */
+h1 {
+  color: #007bff;
+}
+
+/* Estilos para formulários */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilos para rótulos e campos de entrada */
+label,
+input {
+  margin: 10px 0;
+}
+
+/* Estilos para campos de entrada */
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+/* Estilos para botão de submissão */
+button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s; /* Efeito de transição no hover */
+}
+
+button:hover {
+  background: #0056b3;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3); /* Efeito de sombra no hover */
+}
+
+/* Estilos para links */
+a {
+  text-decoration: none;
+  color: #007bff;
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+a:hover {
+  color: #0056b3;
+}
+
+/* Estilos para mensagens de erro (segunda sugestão) */
+#error-message {
+  color: #f13f3f; /* Cor vermelha para mensagens de erro */
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* home.php */
+
+/* Estilos específicos para a página home.php */
+
+.home-container {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  text-align: center;
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+.home-title {
+  color: #007bff;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.home-link {
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  display: block;
+  font-weight: bold;
+  margin: 10px auto;
+  padding: 10px 20px;
+  text-decoration: none;
+  width: 140px;
+  transition: background-color 0.3s, color 0.3s; /* Adicionar transição de cor */
+}
+
+.home-link:hover {
+  background-color: #0056b3;
+  color: #fff; /* Definir a cor do texto no estado hover */
+}
+
+.home-button {
+  background-color: #f13f3f;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-weight: bold;
+  margin: 10px auto;
+  padding: 10px 20px;
+  text-decoration: none;
+}
+
+.home-button:hover {
+  background-color: #ff4040;
+}
+
+.home-form {
+  text-align: center;
+}
