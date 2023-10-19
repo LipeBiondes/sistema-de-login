@@ -1,7 +1,7 @@
 <?php
 include("verificar_sessao.php");
 
-if (isset($_SESSION['id']) && isset($_SESSION['nome'])) {
+if (isset($_SESSION['email']) && isset($_SESSION['nome'])) {
   $nomeUsuario = $_SESSION['nome'];
 } else {
   // Se o usuário não está logado, redirecione para a página de login

@@ -35,9 +35,27 @@
       $stmt->bind_param("sss", $nome, $email, $senhaCriptografada);
 
       if ($stmt->execute()) {
-        header("Location: home.php"); // Redirecionar para a página de login após o cadastro
+        // Procurar o usuário no banco
+        $stmt = $conn->prepare("SELECT id, nome, senha FROM usuario WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows == 1) {
+          $row = $result->fetch_assoc();
+
+          session_start();
+          $_SESSION["email"] = $email;
+          $_SESSION["nome"] = $nome;
+          session_write_close();
+
+          // Redireciona para a página de login após o cadastro e inicia a sessão
+          header("Location: home.php?nome=" . $nome);
+          exit();
+        }
       } else {
         $msg = "Erro ao cadastrar: " . $conn->error;
+        session_destroy();
       }
 
       $stmt->close();

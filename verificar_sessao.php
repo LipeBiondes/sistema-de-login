@@ -3,7 +3,7 @@
 session_start();
 
 // Verificar se o usuário não está logado
-if (!isset($_SESSION['id']) || !isset($_SESSION['nome'])) {
+if (!isset($_SESSION['email']) || !isset($_SESSION['nome'])) {
   header("Location: index.html");
   exit();
 }
