@@ -15,9 +15,11 @@
 
         <label for="password">Senha:</label>
         <input type="password" id="password" name="password" required />
-        <a href="recuperar_senha.php">Esqueceu a senha?</a>
 
         <div id="error-message" class="error-message"></div>
+        <div id="success-message" class="success-message"></div>
+
+        <a href="recuperar_senha.php">Esqueceu a senha?</a>
         <button type="submit">Entrar</button>
       </form>
 
@@ -27,12 +29,25 @@
     <script>
       const urlParams = new URLSearchParams(window.location.search)
       const errorMessage = urlParams.get('error')
+      const emailMessage = urlParams.get('email')
 
       // Se houver uma mensagem de erro, exiba-a
       if (errorMessage) {
         const errorMessageDiv = document.getElementById('error-message')
         errorMessageDiv.textContent = errorMessage
         errorMessageDiv.style.display = 'block'
+      }
+
+      // Preencha o campo de e-mail se ele estiver presente
+      if (emailMessage) {
+        const emailInput = document.getElementById('username')
+        emailInput.value = emailMessage
+
+        const successMessageDiv = document.getElementById('success-message')
+        successMessageDiv.textContent = 'Senha alterada com sucesso!'
+        successMessageDiv.style.color = 'green' // Cor verde para indicar sucesso
+        successMessageDiv.style.marginTop = '10px' // Adiciona um espaço acima da mensagem
+        successMessageDiv.style.fontWeight = 'bold' // Torna o texto em negrito
       }
     </script>
   </body>

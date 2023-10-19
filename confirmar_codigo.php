@@ -14,7 +14,7 @@ $email = $_GET['email'] ?? '';
 <body>
   <?php
   if ($email == '') {
-    header("Location: recuperar_senha.php?error=" . $error_message);
+    header("Location: recuperar_senha.php?error" . $error_message);
     exit();
   }
   ?>
@@ -24,6 +24,11 @@ $email = $_GET['email'] ?? '';
       <label for="codigo">Código de Recuperação:</label>
       <input type="text" id="codigo" name="codigo" required>
       <input type="hidden" name="email" value="<?= $email; ?>">
+      <?php
+      if (!empty($error_message)) {
+        echo '<div class="error-message">' . $error_message . '</div>';
+      }
+      ?>
       <button type="submit">Verificar Código</button>
     </form>
   </div>
