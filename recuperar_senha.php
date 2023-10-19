@@ -1,89 +1,3 @@
-<?php
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require '../sistema-de-login/PHPMailer/src/Exception.php';
-require '../sistema-de-login/PHPMailer/src/PHPMailer.php';
-require '../sistema-de-login/PHPMailer/src/SMTP.php';
-
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  $email = $_POST["email"];
-
-  // Conecte-se ao banco de dados 
-  include("conexao.php");
-
-  // Verifique se o e-mail existe no banco de dados
-  $query = "SELECT * FROM usuario WHERE email = ?";
-  $stmt = $conn->prepare($query);
-  $stmt->bind_param("s", $email);
-  $stmt->execute();
-  $result = $stmt->get_result();
-
-  if ($result->num_rows === 0) {
-    // O e-mail não foi encontrado no banco de dados, exiba uma mensagem de erro
-    $error_message = "E-mail não registrado. Por favor, verifique o e-mail fornecido.";
-  } else {
-    // Gerando um código de recuperação único
-    $code = bin2hex(random_bytes(8));
-
-    // Criptografando o código de recuperação antes de armazená-lo no banco de dados
-    $hashedCode = password_hash($code, PASSWORD_DEFAULT);
-
-    // Inserindo o código criptografado no banco de dados junto com o e-mail do usuário
-    $query = "UPDATE usuario SET codigo_recuperacao = ? WHERE email = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("ss", $hashedCode, $email);
-    $stmt->execute();
-
-    // Verifique se o código de recuperação foi inserido com sucesso
-    if ($stmt->affected_rows > 0) {
-
-      // Enviando o código para o e-mail do usuário
-
-      $mail = new PHPMailer(true);
-
-      try {
-        //Server settings
-        $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'turmabes2020@gmail.com';
-        $mail->Password   = 'mpuo gjpn mxmp wztb';
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port       = 465;
-
-        //Recipients
-        $mail->setFrom('turmabes2020@gmail.com', 'Turma de Bes 2020');
-        $mail->addAddress($email);     //Add a recipient
-
-
-        //Content
-        $mail->isHTML(true);
-        // Assunto e corpo do e-mail
-        $mail->Subject = 'Codigo de Recuperacao de Senha';
-        $mail->Body = 'Seu código de recuperação é: ' . $code;
-
-        $mail->send();
-
-        // Redirecione o usuário para a página de confirmação
-        header("Location: confirmar_codigo_recuperacao.php?email=$email");
-        exit();
-      } catch (Exception $e) {
-        $error_message = 'Erro ao enviar o e-mail: ' . $mail->ErrorInfo;
-      }
-    } else {
-      // Se a atualização não teve êxito, exiba uma mensagem de erro
-      $error_message = "Ocorreu um erro ao gerar o código de recuperação. Tente novamente.";
-    }
-  }
-
-  $stmt->close();
-  $conn->close();
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -94,10 +8,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 
 <body>
+  <?php
+  $error_message = $_GET['error'] ?? '';
+  ?>
   <div class="container">
     <h1>Recuperar Senha</h1>
 
-    <form id="recover-form" action="recuperar_senha.php" method="post">
+    <form id="recover-form" action="enviar_email.php" method="get">
       <label for="email">E-mail:</label>
       <input type="email" id="email" name="email" required />
       <div id="error-message" class="error-message">
