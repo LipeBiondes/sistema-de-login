@@ -14,16 +14,16 @@
 
   $msg = ""; // Inicialize a mensagem
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nome = $_POST["nome"];
-    $email = $_POST["email"];
-    $senha = $_POST["senha"];
+    $nome_do_usuario = $_POST["nome"];
+    $email_do_usuario = $_POST["email"];
+    $senha_do_usuario = $_POST["senha"];
 
     include("conexao.php");
 
     // Verificar se o email já está cadastrado
     $check_query = "SELECT id FROM usuario WHERE email = ?";
     $check_stmt = $conn->prepare($check_query);
-    $check_stmt->bind_param("s", $email);
+    $check_stmt->bind_param("s", $email_do_usuario);
     $check_stmt->execute();
     $check_result = $check_stmt->get_result();
 
@@ -31,25 +31,25 @@
       $msg = "Esse email já está cadastrado.";
     } else {
       // Criptografar a senha
-      $senhaCriptografada = password_hash($senha, PASSWORD_DEFAULT);
+      $senha_criptografada = password_hash($senha_do_usuario, PASSWORD_DEFAULT);
 
       // Inserir os dados na tabela de usuários
       $stmt = $conn->prepare("INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)");
-      $stmt->bind_param("sss", $nome, $email, $senhaCriptografada);
+      $stmt->bind_param("sss", $nome_do_usuario, $email_do_usuario, $senha_criptografada);
 
       if ($stmt->execute()) {
         // Procurar o usuário no banco
         $stmt = $conn->prepare("SELECT id, nome, senha FROM usuario WHERE email = ?");
-        $stmt->bind_param("s", $email);
+        $stmt->bind_param("s", $email_do_usuario);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows == 1) {
-          $_SESSION["email"] = $email;
-          $_SESSION["nome"] = $nome;
+          $_SESSION["email"] = $email_do_usuario;
+          $_SESSION["nome"] = $nome_do_usuario;
 
           // Redireciona para a página de login após o cadastro e inicia a sessão
-          header("Location: home.php?nome=" . $nome);
+          header("Location: home.php?nome=" . $nome_do_usuario);
           exit();
         }
       } else {

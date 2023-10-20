@@ -7,7 +7,7 @@ require '../sistema-de-login/PHPMailer/src/Exception.php';
 require '../sistema-de-login/PHPMailer/src/PHPMailer.php';
 require '../sistema-de-login/PHPMailer/src/SMTP.php';
 
-$email = $_GET["email"];
+$email_do_usuario = $_GET["email"];
 
 // Conecte-se ao banco de dados 
 include("conexao.php");
@@ -15,7 +15,7 @@ include("conexao.php");
 // Verifique se o e-mail existe no banco de dados
 $query = "SELECT * FROM usuario WHERE email = ?";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("s", $email);
+$stmt->bind_param("s", $email_do_usuario);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -24,15 +24,15 @@ if ($result->num_rows === 0) {
   header("Location: recuperar_senha.php?error=E-mail não registrado. Por favor, verifique o e-mail fornecido.");
 } else {
   // Gerando um código de recuperação único
-  $code = bin2hex(random_bytes(2));
+  $codigo_recuperacao = bin2hex(random_bytes(2));
 
   // Criptografando o código de recuperação antes de armazená-lo no banco de dados
-  $hashedCode = password_hash($code, PASSWORD_DEFAULT);
+  $codigo_recuperacao_criptografado = password_hash($codigo_recuperacao, PASSWORD_DEFAULT);
 
   // Inserindo o código criptografado no banco de dados junto com o e-mail do usuário
   $query = "UPDATE usuario SET codigo_recuperacao = ? WHERE email = ?";
   $stmt = $conn->prepare($query);
-  $stmt->bind_param("ss", $hashedCode, $email);
+  $stmt->bind_param("ss", $codigo_recuperacao_criptografado, $email_do_usuario);
   $stmt->execute();
 
   // Verifique se o código de recuperação foi inserido com sucesso
@@ -54,7 +54,7 @@ if ($result->num_rows === 0) {
 
       //Recipients
       $mail->setFrom('turmabes2020@gmail.com', 'Turma de Bes 2020');
-      $mail->addAddress($email);     //Add a recipient
+      $mail->addAddress($email_do_usuario);     //Add a recipient
 
 
       //Content
@@ -72,7 +72,7 @@ if ($result->num_rows === 0) {
           <p>Recebemos uma solicitação de recuperação de senha para a sua conta. Use o código abaixo para redefinir sua senha:</p>
           <div style="background-color: #f5f5f5; padding: 10px; border-radius: 5px; margin: 20px 0;">
             <h2 style="color: #007bff;">Código de Recuperação:</h2>
-            <p style="font-size: 24px;">' . $code . '</p>
+            <p style="font-size: 24px;">' . $codigo_recuperacao . '</p>
           </div>
           <p>Se você não solicitou uma recuperação de senha, você pode ignorar este e-mail com segurança.</p>
           <p>Atenciosamente,</p>
@@ -83,7 +83,7 @@ if ($result->num_rows === 0) {
       $mail->send();
 
       // Redirecione o usuário para a página de confirmação
-      header("Location: confirmar_codigo.php?email=" . $email);
+      header("Location: confirmar_codigo.php?email=" . $email_do_usuario);
       exit();
     } catch (Exception $e) {
       header("Location: recuperar_senha.php?error=Erro ao enviar o e-mail:" . $mail->ErrorInfo);

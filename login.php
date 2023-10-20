@@ -2,25 +2,25 @@
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $username = $_POST["username"];
-  $password = $_POST["password"];
+  $email_do_usuario = $_POST["username"];
+  $senha_do_usuario = $_POST["password"];
 
   include("conexao.php");
 
   // Procurar o usuário no banco
   $stmt = $conn->prepare("SELECT id, nome, senha FROM usuario WHERE email = ?");
-  $stmt->bind_param("s", $username);
+  $stmt->bind_param("s", $email_do_usuario);
   $stmt->execute();
   $result = $stmt->get_result();
 
   if ($result->num_rows == 1) {
     $row = $result->fetch_assoc();
-    $nome = $row["nome"];
-    $senha_encriptografada = $row["senha"];
-    if (password_verify($password, $senha_encriptografada)) {
-      $_SESSION["email"] = $username;
-      $_SESSION["password"] = $senha_encriptografada;
-      header("Location: home.php?nome=" .  $nome);
+    $nome_do_usuario = $row["nome"];
+    $senha_criptografada = $row["senha"];
+    if (password_verify($senha_do_usuario, $senha_criptografada)) {
+      $_SESSION["email"] = $email_do_usuario;
+      $_SESSION["password"] = $senha_criptografada;
+      header("Location: home.php?nome=" .  $nome_do_usuario);
     }
   } else {
     unset($_SESSION['email']);

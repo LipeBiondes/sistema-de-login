@@ -1,8 +1,8 @@
 <?php
 $error_message = ""; // Inicialize a mensagem de erro como uma string vazia
 
-$codigo = $_GET["codigo"];
-$email = $_GET['email'];
+$codigo_recuperacao_usuario = $_GET["codigo"];
+$email_do_usuario = $_GET['email'];
 
 // Conecte-se ao banco de dados
 include("conexao.php");
@@ -10,7 +10,7 @@ include("conexao.php");
 // Verifique se o usuario existe no banco de dados
 $query = "SELECT codigo_recuperacao FROM usuario WHERE email = ?";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("s", $email);
+$stmt->bind_param("s", $email_do_usuario);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -20,15 +20,15 @@ if ($result->num_rows === 0) {
 } else {
   // O e-mail foi encontrado, continue com a verificação do código
   $row = $result->fetch_assoc();
-  $codigoRecuperacao = $row["codigo_recuperacao"];
+  $codigo_recuperado_banco = $row["codigo_recuperacao"];
 
-  if (password_verify($codigo, $codigoRecuperacao)) {
+  if (password_verify($codigo_recuperacao_usuario, $codigo_recuperado_banco)) {
     // O código inserido pelo usuário é válido então redireciono o usuário para a página de troca de senha com o email e o codigo na URL
-    header("Location: trocar_senha.php?email=" . $email . "&codigo=" . $codigo);
+    header("Location: trocar_senha.php?email=" . $email_do_usuario . "&codigo=" . $codigo_recuperacao_usuario);
     exit();
   } else {
     // O código inserido é inválido, defina a mensagem de erro
-    header("Location: confirmar_codigo.php?error=Código de recuperação inválido. Tente novamente.&email=" . $email);
+    header("Location: confirmar_codigo.php?error=Código de recuperação inválido. Tente novamente.&email=" . $email_do_usuario);
   }
 }
 

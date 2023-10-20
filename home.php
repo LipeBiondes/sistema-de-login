@@ -1,6 +1,6 @@
 <?php
 include("verificar_sessao.php");
-$nomeUsuario = $_GET["nome"];
+$nomeUsuario = $_GET["nome"] ?? "Usuario";
 ?>
 
 <!DOCTYPE html>

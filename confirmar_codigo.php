@@ -1,6 +1,6 @@
 <?php
-$error_message = $_GET['error'] ?? '';
-$email = $_GET['email'] ?? '';
+$mensagem_de_erro = $_GET['error'] ?? '';
+$email_do_usuario = $_GET['email'] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -13,8 +13,8 @@ $email = $_GET['email'] ?? '';
 
 <body>
   <?php
-  if ($email == '') {
-    header("Location: recuperar_senha.php?error" . $error_message);
+  if ($email_do_usuario == '') {
+    header("Location: recuperar_senha.php?error" . $mensagem_de_erro);
     exit();
   }
   ?>
@@ -23,10 +23,10 @@ $email = $_GET['email'] ?? '';
     <form id="confirm-form" action="validar_codigo.php" method="get">
       <label for="codigo">Código de Recuperação:</label>
       <input type="text" id="codigo" name="codigo" required>
-      <input type="hidden" name="email" value="<?= $email; ?>">
+      <input type="hidden" name="email" value="<?= $email_do_usuario; ?>">
       <?php
-      if (!empty($error_message)) {
-        echo '<div class="error-message">' . $error_message . '</div>';
+      if (!empty($mensagem_de_erro)) {
+        echo '<div class="error-message">' . $mensagem_de_erro . '</div>';
       }
       ?>
       <button type="submit">Verificar Código</button>
