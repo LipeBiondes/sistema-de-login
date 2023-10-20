@@ -1,6 +1,6 @@
 <?php
 include("verificar_sessao.php");
-$nomeUsuario = $_GET["nome"] ?? "Usuario";
+$nome_usuario = $_GET["nome"] ?? "Usuario";
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +14,7 @@ $nomeUsuario = $_GET["nome"] ?? "Usuario";
 
 <body>
   <div class="home-container">
-    <h1 class="home-title">Bem-vindo, <?php echo $nomeUsuario; ?>!</h1>
+    <h1 class="home-title">Bem-vindo, <?php echo $nome_usuario; ?>!</h1>
     <p>Esta é a sua página de início.</p>
     <a class="home-link" href="configuracoes.php">Configurações</a>
     <form method="post" action="logout.php" class="home-form">
