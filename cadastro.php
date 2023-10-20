@@ -9,6 +9,9 @@
 
 <body>
   <?php
+  // Iniciar a sessão
+  session_start();
+
   $msg = ""; // Inicialize a mensagem
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST["nome"];
@@ -42,12 +45,8 @@
         $result = $stmt->get_result();
 
         if ($result->num_rows == 1) {
-          $row = $result->fetch_assoc();
-
-          session_start();
           $_SESSION["email"] = $email;
           $_SESSION["nome"] = $nome;
-          session_write_close();
 
           // Redireciona para a página de login após o cadastro e inicia a sessão
           header("Location: home.php?nome=" . $nome);
@@ -55,6 +54,9 @@
         }
       } else {
         $msg = "Erro ao cadastrar: " . $conn->error;
+
+        unset($_SESSION['email']);
+        unset($_SESSION['password']);
         session_destroy();
       }
 

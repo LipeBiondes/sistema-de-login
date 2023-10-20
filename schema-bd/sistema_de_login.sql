@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 18/10/2023 às 04:34
+-- Tempo de geração: 20/10/2023 às 03:18
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -36,15 +36,6 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `usuario`
---
-
-INSERT INTO `usuario` (`id`, `nome`, `email`, `senha`, `codigo_recuperacao`) VALUES
-(2, 'ismagay', 'isma@gmail.com', '$2y$10$TfE1vklAcryT8iqld7aTsu4Vdp.ZkoDWkodvFbJPqdMQZSpKMqFEy', ''),
-(3, 'lipe', 'lipe@gmail.com', '$2y$10$9K.wlqJPqjt0k6QiSdgCo.9NaAs3/w2lDY6zhHXAbCJUcZdZ9fnHW', '$2y$10$nNjM/Pc98p0ORiVQCXxGROoV/QVmQl/Q4lAhZmsuMVQTvNcIJrmZ2'),
-(5, 'caio gay', 'caio@gmail.com', '$2y$10$6O0Z.4XJzteySZHxD.yA4.QnoyiRp/ZuwSEErG6Hxj1q8MNmztZBO', '');
-
---
 -- Índices para tabelas despejadas
 --
 
@@ -62,7 +53,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
