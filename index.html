@@ -51,6 +51,10 @@
         successMessageDiv.style.color = 'green' // Cor verde para indicar sucesso
         successMessageDiv.style.marginTop = '10px' // Adiciona um espaço acima da mensagem
         successMessageDiv.style.fontWeight = 'bold' // Torna o texto em negrito
+
+        setTimeout(function() {
+        successMessageDiv.textContent = ''; // Limpa o conteúdo da mensagem
+    }, 3000);
       }
     </script>
   </body>
