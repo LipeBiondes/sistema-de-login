@@ -30,6 +30,7 @@
       const urlParams = new URLSearchParams(window.location.search)
       const errorMessage = urlParams.get('error')
       const emailMessage = urlParams.get('email')
+      const successMessage = urlParams.get('success')
 
       // Se houver uma mensagem de erro, exiba-a
       if (errorMessage) {
@@ -45,6 +46,14 @@
 
         const successMessageDiv = document.getElementById('success-message')
         successMessageDiv.textContent = 'Senha alterada com sucesso!'
+        successMessageDiv.style.color = 'green' // Cor verde para indicar sucesso
+        successMessageDiv.style.marginTop = '10px' // Adiciona um espaço acima da mensagem
+        successMessageDiv.style.fontWeight = 'bold' // Torna o texto em negrito
+      }
+
+      if (successMessage) {
+        const successMessageDiv = document.getElementById('success-message')
+        successMessageDiv.textContent = successMessage
         successMessageDiv.style.color = 'green' // Cor verde para indicar sucesso
         successMessageDiv.style.marginTop = '10px' // Adiciona um espaço acima da mensagem
         successMessageDiv.style.fontWeight = 'bold' // Torna o texto em negrito

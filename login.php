@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $username = $_POST["username"];
   $password = $_POST["password"];
@@ -13,17 +15,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if ($result->num_rows == 1) {
     $row = $result->fetch_assoc();
-    if (password_verify($password, $row["senha"])) {
-      session_start();
-      $_SESSION["id"] = $row["id"];
-      $_SESSION["nome"] = $row["nome"];
-      session_write_close(); // Fechar a sessão para evitar problemas de redirecionamento
-      header("Location: home.php?nome=" . urlencode($row["nome"]));
-      exit();
+    $nome = $row["nome"];
+    $senha_encriptografada = $row["senha"];
+    if (password_verify($password, $senha_encriptografada)) {
+      $_SESSION["email"] = $username;
+      $_SESSION["password"] = $senha_encriptografada;
+      header("Location: home.php?nome=" .  $nome);
     }
+  } else {
+    unset($_SESSION['email']);
+    header("Location: index.html?error=Usuário não encontrado ou senha incorreta");
   }
-
-  // Se chegou aqui, o login falhou
-  header("Location: index.html?error=Usuário não encontrado ou senha incorreta");
-  exit();
 }
