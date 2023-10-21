@@ -1,9 +1,8 @@
 <?php
 include("verificar_sessao.php");
-
-$id_usuario = $_SESSION["id"];
-
+$nome_usuario = "";
 try {
+  $id_usuario = $_SESSION["id"];
   include("conexao.php");
   $query = $conn->prepare("SELECT * FROM usuario WHERE id = ?");
   $query->bind_param("s", $id_usuario);

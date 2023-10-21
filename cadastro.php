@@ -1,25 +1,62 @@
 <?php
-  // Iniciar a sessão
-  session_start();
+// Iniciar a sessão
+session_start();
 
-  $msg = ""; // Inicialize a mensagem
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nome_do_usuario = $_POST["nome"];
-    $email_do_usuario = $_POST["email"];
-    $senha_do_usuario = $_POST["senha"];
+$msg = ""; // Inicialize a mensagem
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $nome_do_usuario = $_POST["nome"];
+  $email_do_usuario = $_POST["email"];
+  $senha_do_usuario = $_POST["senha"];
 
-    include("conexao.php");
+  include("conexao.php");
 
-    // Verificar se o email já está cadastrado
-    $check_query = "SELECT id FROM usuario WHERE email = ?";
-    $check_stmt = $conn->prepare($check_query);
-    $check_stmt->bind_param("s", $email_do_usuario);
-    $check_stmt->execute();
-    $check_result = $check_stmt->get_result();
+  // Verificar se o email já está cadastrado
+  $check_query = "SELECT id FROM usuario WHERE email = ?";
+  $check_stmt = $conn->prepare($check_query);
+  $check_stmt->bind_param("s", $email_do_usuario);
+  $check_stmt->execute();
+  $check_result = $check_stmt->get_result();
 
-    if ($check_result->num_rows > 0) {
+  if ($check_result->num_rows > 0) {
 
-      $data = "LOG 8: O USUÁRIO " . $_SESSION['email'] . " TENTOU CADASTRAR UM EMAIL EXISTENTE AS " . date('d/m/Y H:i:s', time());
+    $data = "LOG 8: O USUÁRIO " . $email_do_usuario . " TENTOU CADASTRAR UM EMAIL EXISTENTE AS " . date('d/m/Y H:i:s', time());
+    $data = $data . PHP_EOL;
+    $file = fopen("log.txt", "a"); // Abre o arquivo "arquivo.txt" para escrita (se não existir, ele será criado)        
+
+    if ($file) {
+      fwrite($file, $data);
+      fclose($file); // Fecha o arquivo após a escrita
+    }
+
+    $msg = "Esse email já está cadastrado.";
+  } else {
+    // Criptografar a senha
+    $senha_criptografada = password_hash($senha_do_usuario, PASSWORD_DEFAULT);
+
+    // Inserir os dados na tabela de usuários
+    $stmt = $conn->prepare("INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $nome_do_usuario, $email_do_usuario, $senha_criptografada);
+
+    if ($stmt->execute()) {
+      // Procurar o usuário no banco
+      $stmt = $conn->prepare("SELECT id, nome, senha FROM usuario WHERE email = ?");
+      $stmt->bind_param("s", $email_do_usuario);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      $dados_salvos = $result->fetch_assoc();
+      $id_usuario = $dados_salvos["id"];
+      if ($result->num_rows == 1) {
+        $_SESSION["email"] = $email_do_usuario;
+        $_SESSION["id"] = $id_usuario;
+
+        // Redireciona para a página de login após o cadastro e inicia a sessão
+        session_write_close();
+        header("Location: home.php");
+        exit();
+      }
+    } else {
+
+      $data = "LOG 9: O USUÁRIO " . $email_do_usuario . " TENTOU CADASTRAR UM EMAIL EXISTENTE AS " . date('d/m/Y H:i:s', time());
       $data = $data . PHP_EOL;
       $file = fopen("log.txt", "a"); // Abre o arquivo "arquivo.txt" para escrita (se não existir, ele será criado)        
 
@@ -28,54 +65,19 @@
         fclose($file); // Fecha o arquivo após a escrita
       }
 
-      $msg = "Esse email já está cadastrado.";
-    } else {
-      // Criptografar a senha
-      $senha_criptografada = password_hash($senha_do_usuario, PASSWORD_DEFAULT);
+      $msg = "Erro ao cadastrar: Por favor tente novamente";
 
-      // Inserir os dados na tabela de usuários
-      $stmt = $conn->prepare("INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)");
-      $stmt->bind_param("sss", $nome_do_usuario, $email_do_usuario, $senha_criptografada);
-
-      if ($stmt->execute()) {
-        // Procurar o usuário no banco
-        $stmt = $conn->prepare("SELECT id, nome, senha FROM usuario WHERE email = ?");
-        $stmt->bind_param("s", $email_do_usuario);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows == 1) {
-          $_SESSION["email"] = $email_do_usuario;
-          $_SESSION["nome"] = $nome_do_usuario;
-
-          // Redireciona para a página de login após o cadastro e inicia a sessão
-          header("Location: home.php?nome=" . $nome_do_usuario);
-          exit();
-        }
-      } else {
-
-        $data = "LOG 9: O USUÁRIO " . $_SESSION['email'] . " TENTOU CADASTRAR UM EMAIL EXISTENTE AS " . date('d/m/Y H:i:s', time());
-        $data = $data . PHP_EOL;
-        $file = fopen("log.txt", "a"); // Abre o arquivo "arquivo.txt" para escrita (se não existir, ele será criado)        
-  
-        if ($file) {
-          fwrite($file, $data);
-          fclose($file); // Fecha o arquivo após a escrita
-        }
-
-        $msg = "Erro ao cadastrar: Por favor tente novamente";
-
-        unset($_SESSION['email']);
-        unset($_SESSION['password']);
-        session_destroy();
-      }
-
-      $stmt->close();
+      unset($_SESSION['email']);
+      unset($_SESSION['id']);
+      session_destroy();
     }
 
-    $check_stmt->close();
-    $conn->close();
+    $stmt->close();
   }
+
+  $check_stmt->close();
+  $conn->close();
+}
 ?>
 
 <!DOCTYPE html>
