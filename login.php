@@ -27,6 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $_SESSION["email"] = $email_do_usuario;
         $_SESSION["id"] = $dados_usuario["id"];
+        session_write_close();
         header("Location: home.php");
       } else {
 

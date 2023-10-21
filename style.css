@@ -19,13 +19,6 @@ body {
   text-align: center;
 }
 
-/* Estilos para mensagens de erro */
-.error-message {
-  color: red;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
 /* Estilos para o título principal */
 h1 {
   color: #007bff;
@@ -93,6 +86,24 @@ a:hover {
   font-size: 14px;
   font-weight: bold;
   margin-top: 5px;
+}
+
+#danger-message {
+  color: #b9992f; /* Cor verde para mensagens de sucesso */
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+a#danger-message {
+  color: #b9992f; /* Cor verde para mensagens de sucesso */
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+a#danger-message:hover {
+  color: #75611f;
 }
 
 /* home.php */

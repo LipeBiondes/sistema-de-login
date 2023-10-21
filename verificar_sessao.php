@@ -7,6 +7,6 @@ if ((!isset($_SESSION["email"]) == true) && (!isset($_SESSION["id"]) == true)) {
   unset($_SESSION['email']);
   unset($_SESSION['id']);
   session_write_close();
-  header("Location: index.html?une");
+  header("Location: index.html?unl");
 }
 session_write_close();

@@ -87,11 +87,14 @@ try {
         $mail->send();
 
         // Redirecione o usuário para a página de confirmação
-        header("Location: confirmar_codigo.php?codigo=" . $codigo_recuperacao);
+        $_SESSION["codigo-recuperacao"] = $codigo_recuperacao;
+        header("Location: confirmar_codigo.php");
+        session_write_close();
         $stmt->close();
         $conn->close();
         exit();
       } catch (Exception $e) {
+        session_destroy();
         header("Location: recuperar_senha.php?error=Erro ao enviar o e-mail:" . $mail->ErrorInfo);
       }
     } else {

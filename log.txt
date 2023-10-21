@@ -41,3 +41,13 @@ LOG 0: O USUÁRIO ismagay@gmail.com LOGOU COM SUCESSO AS 20/10/2023 23:01:46
 LOG 0: O USUÁRIO caiogay@gmail.com LOGOU COM SUCESSO AS 20/10/2023 23:01:56
 LOG 0: O USUÁRIO ismagay@gmail.com LOGOU COM SUCESSO AS 20/10/2023 23:08:41
 LOG 0: O USUÁRIO ismagay@gmail.com LOGOU COM SUCESSO AS 20/10/2023 23:13:03
+LOG 0: O USUÁRIO alefefelipebiondesmagalhaes@gmail.com LOGOU COM SUCESSO AS 21/10/2023 16:45:26
+LOG 0: O USUÁRIO alefefelipebiondesmagalhaes@gmail.com LOGOU COM SUCESSO AS 21/10/2023 16:45:50
+LOG 0: O USUÁRIO alefefelipebiondesmagalhaes@gmail.com LOGOU COM SUCESSO AS 21/10/2023 16:55:24
+LOG 0: O USUÁRIO alefefelipebiondesmagalhaes@gmail.com LOGOU COM SUCESSO AS 21/10/2023 17:03:02
+LOG 0: O USUÁRIO alefefelipebiondesmagalhaes@gmail.com LOGOU COM SUCESSO AS 21/10/2023 17:11:38
+LOG 0: O USUÁRIO alefefelipebiondesmagalhaes@gmail.com LOGOU COM SUCESSO AS 21/10/2023 17:12:26
+LOG 0: O USUÁRIO alefefelipebiondesmagalhaes@gmail.com LOGOU COM SUCESSO AS 21/10/2023 17:12:45
+LOG 0: O USUÁRIO caiogay@gmail.com LOGOU COM SUCESSO AS 21/10/2023 17:14:53
+LOG 0: O USUÁRIO alefefelipebiondesmagalhaes@gmail.com LOGOU COM SUCESSO AS 21/10/2023 17:22:44
+LOG 0: O USUÁRIO alefefelipebiondesmagalhaes@gmail.com LOGOU COM SUCESSO AS 21/10/2023 17:24:20

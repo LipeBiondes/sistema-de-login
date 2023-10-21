@@ -2,7 +2,7 @@
 session_start();
 
 $email_do_usuario = $_SESSION["email"] ?? "";
-$codigo_do_usuario = $_GET["codigo"] ?? "";
+$codigo_do_usuario = $_SESSION["codigo-recuperacao"];
 $messagem_de_erro = "";
 
 if (empty($email_do_usuario) || empty($codigo_do_usuario)) {

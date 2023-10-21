@@ -2,7 +2,7 @@
 session_start();
 $error_message = ""; // Inicialize a mensagem de erro como uma string vazia
 
-$codigo_recuperacao_usuario = $_POST["codigo"];
+$codigo_recuperacao_usuario = $_SESSION["codigo-recuperacao"];
 $email_do_usuario = $_SESSION["email"];
 
 try {
@@ -26,7 +26,7 @@ try {
 
     if (password_verify($codigo_recuperacao_usuario, $codigo_recuperado_banco)) {
       // O código inserido pelo usuário é válido então redireciono o usuário para a página de troca de senha com o email e o codigo na URL
-      header("Location: trocar_senha.php?codigo=" . $codigo_recuperacao_usuario);
+      header("Location: trocar_senha.php");
       $stmt->close();
       $conn->close();
       exit();

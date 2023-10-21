@@ -1,6 +1,7 @@
 <?php
 include("verificar_sessao.php");
 $nome_usuario = "";
+$messagem = "";
 try {
   $id_usuario = $_SESSION["id"];
   include("conexao.php");
@@ -11,6 +12,10 @@ try {
   if ($resultado) {
     $dados_usuario = $resultado->fetch_assoc();
     $nome_usuario = $dados_usuario["nome"];
+
+    if ($dados_usuario["codigo_recuperacao"]) {
+      $messagem = "Parece que alguém tentou recuperar sua senha. Clique aqui para alterar a sua senha.";
+    }
   } else {
     header("Location: index.html?une");
     session_destroy();
@@ -41,6 +46,13 @@ try {
     <form method="post" action="logout.php" class="home-form">
       <button class="home-button" type="submit" name="sair">Sair</button>
     </form>
+    <div id="danger-message" class="danger-message">
+      <?php
+      if (!empty($messagem)) {
+        echo "<a id=\"danger-message\" href='alterar_senha.php'>$messagem</a>";
+      }
+      ?>
+    </div>
   </div>
 </body>
 
