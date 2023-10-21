@@ -6,7 +6,7 @@ $codigo_do_usuario = $_GET["codigo"] ?? "";
 $messagem_de_erro = "";
 
 if (empty($email_do_usuario) || empty($codigo_do_usuario)) {
-  header("Location: recuperar_senha.php?error=Ocorreu um erro ao tentar recuperar a senha. Por favor, tente novamente.");
+  header("Location: recuperar_senha.php?ers");
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -26,9 +26,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->get_result();
 
     if ($result->num_rows === 0) {
-      // Caio
-      $messagem_de_erro = "Usuário não registrado. Por favor, verifique o e-mail fornecido.";
-      header("Location: index.html?error=" . $messagem_de_erro);
+      // O e-mail não foi encontrado, redirecione o usuário
+      header("Location: index.html?une");
     } else {
       // O e-mail foi encontrado, continue com a verificação do código
       $row = $result->fetch_assoc();

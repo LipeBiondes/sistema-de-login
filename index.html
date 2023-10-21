@@ -51,6 +51,7 @@
       const erroProblemasTecnicos = urlParams.get('ept')
       const erroUsuarioNaoLogado = urlParams.get('unl')
       const erroUsuarioNaoEncontrado = urlParams.get('une')
+      const erroRecuperarSenha = urlParams.get('ers')
       const successMessageSenhaAlterada = urlParams.get('sas')
       const succesMessageUsuarioDeslogado = urlParams.get('ud')
 
@@ -77,6 +78,13 @@
       if (erroUsuarioNaoEncontrado == '') {
         errorMessageDiv.textContent =
           'Não conseguimos encontrar um usuário com esse email.'
+        errorMessageDiv.style.display = 'block'
+        hideMessage(errorMessageDiv, 5000)
+      }
+
+      if (erroRecuperarSenha == '') {
+        errorMessageDiv.textContent =
+          'Não conseguimos recuperar a sua senha, tente novamente mais tarde.'
         errorMessageDiv.style.display = 'block'
         hideMessage(errorMessageDiv, 5000)
       }
