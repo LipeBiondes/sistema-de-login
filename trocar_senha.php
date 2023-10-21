@@ -1,30 +1,21 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<?php
+session_start();
 
-<head>
-  <meta charset="UTF-8">
-  <title>Trocar Senha</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+$email_do_usuario = $_SESSION["email"] ?? "";
+$codigo_do_usuario = $_GET["codigo"] ?? "";
+$messagem_de_erro = "";
 
-<body>
+if (empty($email_do_usuario) || empty($codigo_do_usuario)) {
+  header("Location: recuperar_senha.php?error=Ocorreu um erro ao tentar recuperar a senha. Por favor, tente novamente.");
+}
 
-  <?php
-  $email_do_usuario = $_GET["email"] ?? "";
-  $codigo_do_usuario = $_GET["codigo"] ?? "";
-  $messagem_de_erro = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $nova_senha = $_POST["nova-senha"];
+  $email_do_usuario = $_POST["email"];
+  $codigo_do_usuario = $_POST["codigo"];
 
-  if (empty($email_do_usuario) || empty($codigo_do_usuario)) {
-    $email_do_usuario = $_POST["email"];
-    $codigo_do_usuario = $_POST["codigo"];
-    if (empty($email_do_usuario) || empty($codigo_do_usuario)) {
-      header("Location: recuperar_senha.php?error=Ocorreu um erro ao tentar recuperar a senha. Por favor, tente novamente.");
-    }
-  }
-
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nova_senha = $_POST["nova-senha"];
-
+  try {
+    // Conecte-se ao banco de dados
     include("conexao.php");
 
     // Verifique se o usuário existe no banco de dados
@@ -35,6 +26,7 @@
     $result = $stmt->get_result();
 
     if ($result->num_rows === 0) {
+      // Caio
       $messagem_de_erro = "Usuário não registrado. Por favor, verifique o e-mail fornecido.";
       header("Location: index.html?error=" . $messagem_de_erro);
     } else {
@@ -44,17 +36,19 @@
 
       if (password_verify($codigo_do_usuario, $codigo_do_banco)) {
         // Senha válida, criptografe-a
-        $senha_criptografada = password_hash($nova_senha, PASSWORD_DEFAULT);
+        $nova_senha_criptografada = password_hash($nova_senha, PASSWORD_DEFAULT);
 
         // Atualize a senha e limpe o código de recuperação
         $query = "UPDATE usuario SET senha = ?, codigo_recuperacao = NULL WHERE email = ?";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("ss", $senha_criptografada, $email_do_usuario);
+        $stmt->bind_param("ss", $nova_senha_criptografada, $email_do_usuario);
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
           // Senha alterada com sucesso, redirecione o usuário
-          header("Location: index.html?email=" . $email_do_usuario . "&success=Senha alterada com sucesso. Faça login com a nova senha.");
+          unset($_SESSION["email"]);
+          session_destroy();
+          header("Location: index.html?sas");
         } else {
           $messagem_de_erro = "Ocorreu um erro ao alterar a senha. Tente novamente.";
         }
@@ -62,8 +56,21 @@
         $messagem_de_erro = "Código de recuperação inválido. Tente novamente.";
       }
     }
+  } catch (Exception $e) {
+    header("Location: index.html?ept");
   }
-  ?>
+}
+?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Trocar Senha</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
 
   <div class="container">
     <h1>Trocar Senha</h1>

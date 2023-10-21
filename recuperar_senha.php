@@ -14,7 +14,7 @@
   <div class="container">
     <h1>Recuperar Senha</h1>
 
-    <form id="recover-form" action="enviar_email.php" method="get">
+    <form id="recover-form" action="enviar_email.php" method="post">
       <label for="email">E-mail:</label>
       <input type="email" id="email" name="email" required />
       <div id="error-message" class="error-message">

@@ -1,6 +1,7 @@
 <?php
+session_start();
 $mensagem_de_erro = $_GET['error'] ?? '';
-$email_do_usuario = $_GET['email'] ?? '';
+$email_do_usuario = $_SESSION['email'] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -14,13 +15,13 @@ $email_do_usuario = $_GET['email'] ?? '';
 <body>
   <?php
   if ($email_do_usuario == '') {
+    $messagem_de_erro = "Não conseguimos encontrar seu email, tente novamente.";
     header("Location: recuperar_senha.php?error" . $mensagem_de_erro);
-    exit();
   }
   ?>
   <div class="container">
     <h1>Confirmar Código de Recuperação</h1>
-    <form id="confirm-form" action="validar_codigo.php" method="get">
+    <form id="confirm-form" action="validar_codigo.php" method="post">
       <label for="codigo">Código de Recuperação:</label>
       <input type="text" id="codigo" name="codigo" required>
       <input type="hidden" name="email" value="<?= $email_do_usuario; ?>">

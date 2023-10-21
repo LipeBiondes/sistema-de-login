@@ -88,6 +88,13 @@ a:hover {
   margin-top: 5px;
 }
 
+#success-message {
+  color: #3c763d; /* Cor verde para mensagens de sucesso */
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
 /* home.php */
 
 /* Estilos específicos para a página home.php */

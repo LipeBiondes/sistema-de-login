@@ -5,6 +5,7 @@
     <title>Login</title>
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
     <div class="container">
       <h1>Login</h1>
@@ -16,8 +17,16 @@
         <label for="password">Senha:</label>
         <input type="password" id="password" name="password" required />
 
-        <div id="error-message" class="error-message"></div>
-        <div id="success-message" class="success-message"></div>
+        <div
+          id="error-message"
+          class="error-message"
+          style="display: none"
+        ></div>
+        <div
+          id="success-message"
+          class="success-message"
+          style="display: none"
+        ></div>
 
         <a href="recuperar_senha.php">Esqueceu a senha?</a>
         <button type="submit">Entrar</button>
@@ -27,34 +36,67 @@
     </div>
 
     <script>
+      function hideMessage(element, delay) {
+        setTimeout(function () {
+          element.textContent = '' // Limpa o conteúdo do elemento
+        }, delay)
+      }
+
+      const successMessageDiv = document.getElementById('success-message')
+      const errorMessageDiv = document.getElementById('error-message')
+
       const urlParams = new URLSearchParams(window.location.search)
-      const errorMessage = urlParams.get('error')
-      const emailMessage = urlParams.get('email')
-      const successMessage = urlParams.get('success')
+      const erroSenhaNaoCorresponde = urlParams.get('snc')
+      const erroEmailNaoEncontrado = urlParams.get('ene')
+      const erroProblemasTecnicos = urlParams.get('ept')
+      const erroUsuarioNaoLogado = urlParams.get('unl')
+      const erroUsuarioNaoEncontrado = urlParams.get('une')
+      const successMessageSenhaAlterada = urlParams.get('sas')
+      const succesMessageUsuarioDeslogado = urlParams.get('ud')
 
-      // Se houver uma mensagem de erro, exiba-a
-      if (errorMessage) {
-        const errorMessageDiv = document.getElementById('error-message')
-        errorMessageDiv.textContent = errorMessage
+      if (erroEmailNaoEncontrado == '') {
+        errorMessageDiv.textContent = 'Email ou senha não encontrados.'
+        errorMessageDiv.style.display = 'block' // Exibir a mensagem de erro
+        hideMessage(errorMessageDiv, 5000) // Esconder a mensagem de erro depois de 5 segundos
+      }
+
+      if (erroProblemasTecnicos == '') {
+        errorMessageDiv.textContent =
+          'Problemas técnicos. Tente novamente mais tarde.'
         errorMessageDiv.style.display = 'block'
+        hideMessage(errorMessageDiv, 5000)
       }
 
-      // Preencha o campo de e-mail se ele estiver presente
-      if (emailMessage) {
-        const emailInput = document.getElementById('username')
-        emailInput.value = emailMessage
+      if (erroUsuarioNaoLogado == '') {
+        errorMessageDiv.textContent =
+          'Você precisa estar logado para acessar essa página.'
+        errorMessageDiv.style.display = 'block'
+        hideMessage(errorMessageDiv, 5000)
       }
 
-      if (successMessage) {
-        const successMessageDiv = document.getElementById('success-message')
-        successMessageDiv.textContent = successMessage
-        successMessageDiv.style.color = 'green' // Cor verde para indicar sucesso
-        successMessageDiv.style.marginTop = '10px' // Adiciona um espaço acima da mensagem
-        successMessageDiv.style.fontWeight = 'bold' // Torna o texto em negrito
+      if (erroUsuarioNaoEncontrado == '') {
+        errorMessageDiv.textContent =
+          'Não conseguimos encontrar um usuário com esse email.'
+        errorMessageDiv.style.display = 'block'
+        hideMessage(errorMessageDiv, 5000)
+      }
 
-        setTimeout(function() {
-        successMessageDiv.textContent = ''; // Limpa o conteúdo da mensagem
-    }, 3000);
+      if (erroSenhaNaoCorresponde == '') {
+        errorMessageDiv.textContent = 'Senha ou usuário incorretos.'
+        errorMessageDiv.style.display = 'block'
+        hideMessage(errorMessageDiv, 5000)
+      }
+
+      if (successMessageSenhaAlterada == '') {
+        successMessageDiv.textContent = 'A senha foi alterada com sucesso!'
+        successMessageDiv.style.display = 'block'
+        hideMessage(successMessageDiv, 5000)
+      }
+
+      if (succesMessageUsuarioDeslogado == '') {
+        successMessageDiv.textContent = 'Você foi deslogado com sucesso!'
+        successMessageDiv.style.display = 'block'
+        hideMessage(successMessageDiv, 5000)
       }
     </script>
   </body>

@@ -7,5 +7,5 @@ if ((!isset($_SESSION["email"]) == true) && (!isset($_SESSION["password"]) == tr
   unset($_SESSION['email']);
   unset($_SESSION['password']);
 
-  header("Location: index.html?error=O usuário não está logado.");
+  header("Location: index.html?une");
 }

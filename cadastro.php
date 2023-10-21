@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-  <meta charset="UTF-8" />
-  <title>Cadastro</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-
-<body>
-  <?php
+<?php
   // Iniciar a sessão
   session_start();
 
@@ -28,6 +18,16 @@
     $check_result = $check_stmt->get_result();
 
     if ($check_result->num_rows > 0) {
+
+      $data = "LOG 8: O USUÁRIO " . $_SESSION['email'] . " TENTOU CADASTRAR UM EMAIL EXISTENTE AS " . date('d/m/Y H:i:s', time());
+      $data = $data . PHP_EOL;
+      $file = fopen("log.txt", "a"); // Abre o arquivo "arquivo.txt" para escrita (se não existir, ele será criado)        
+
+      if ($file) {
+        fwrite($file, $data);
+        fclose($file); // Fecha o arquivo após a escrita
+      }
+
       $msg = "Esse email já está cadastrado.";
     } else {
       // Criptografar a senha
@@ -53,7 +53,17 @@
           exit();
         }
       } else {
-        $msg = "Erro ao cadastrar: " . $conn->error;
+
+        $data = "LOG 9: O USUÁRIO " . $_SESSION['email'] . " TENTOU CADASTRAR UM EMAIL EXISTENTE AS " . date('d/m/Y H:i:s', time());
+        $data = $data . PHP_EOL;
+        $file = fopen("log.txt", "a"); // Abre o arquivo "arquivo.txt" para escrita (se não existir, ele será criado)        
+  
+        if ($file) {
+          fwrite($file, $data);
+          fclose($file); // Fecha o arquivo após a escrita
+        }
+
+        $msg = "Erro ao cadastrar: Por favor tente novamente";
 
         unset($_SESSION['email']);
         unset($_SESSION['password']);
@@ -66,7 +76,18 @@
     $check_stmt->close();
     $conn->close();
   }
-  ?>
+?>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Cadastro</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
 
   <div class="container">
     <h1>Cadastro</h1>

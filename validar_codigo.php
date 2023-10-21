@@ -1,8 +1,9 @@
 <?php
+session_start();
 $error_message = ""; // Inicialize a mensagem de erro como uma string vazia
 
-$codigo_recuperacao_usuario = $_GET["codigo"];
-$email_do_usuario = $_GET['email'];
+$codigo_recuperacao_usuario = $_POST["codigo"];
+$email_do_usuario = $_SESSION["email"];
 
 try {
   // Conecte-se ao banco de dados
@@ -25,16 +26,15 @@ try {
 
     if (password_verify($codigo_recuperacao_usuario, $codigo_recuperado_banco)) {
       // O código inserido pelo usuário é válido então redireciono o usuário para a página de troca de senha com o email e o codigo na URL
-      header("Location: trocar_senha.php?email=" . $email_do_usuario . "&codigo=" . $codigo_recuperacao_usuario);
+      header("Location: trocar_senha.php?codigo=" . $codigo_recuperacao_usuario);
+      $stmt->close();
+      $conn->close();
       exit();
     } else {
       // O código inserido é inválido, defina a mensagem de erro
-      header("Location: confirmar_codigo.php?error=Código de recuperação inválido. Tente novamente.&email=" . $email_do_usuario);
+      header("Location: confirmar_codigo.php?error=Código de recuperação inválido. Tente novamente.");
     }
   }
-
-  $stmt->close();
-  $conn->close();
 } catch (Exception $e) {
-  header("Location: index.html?error=Estamos com problemas técnicos, tente novamente mais tarde.");
+  header("Location: index.html?ept");
 }
