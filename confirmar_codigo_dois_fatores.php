@@ -8,7 +8,7 @@ $email_do_usuario = $_SESSION['email'] ?? '';
 
 <head>
   <meta charset="UTF-8">
-  <title>Confirmar Código de Recuperação</title>
+  <title>Confirmar Código de Ativação</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -20,9 +20,9 @@ $email_do_usuario = $_SESSION['email'] ?? '';
   }
   ?>
   <div class="container">
-    <h1>Confirmar Código de Recuperação</h1>
+    <h1>Confirmar Código de Ativação</h1>
     <form id="confirm-form" action="validar_codigo_dois_fatores.php" method="post">
-      <label for="codigo">Código de Recuperação:</label>
+      <label for="codigo">Código de Ativação:</label>
       <input type="text" id="codigo" name="codigo" required>
       <input type="hidden" name="email" value="<?= $email_do_usuario; ?>">
       <?php

@@ -5,7 +5,7 @@ include("funcoes.php");
 
 $error_message = ""; // Inicialize a mensagem de erro como uma string vazia
 
-$codigo_recuperacao_usuario = $_SESSION["codigo-recuperacao"];
+$codigo_recuperacao_usuario = $_POST["codigo"];
 $email_do_usuario = $_SESSION["email"];
 
 try {

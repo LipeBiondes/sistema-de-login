@@ -48,14 +48,14 @@ try {
       echo "
       <form action=\"ativar_dois_fatores.php\" method=\"post\">
         <input type=\"email\" name=\"email\" style=\"display: none;\" value=\"$email_usuario\">
-        <button type=\"submit\" id=\"configuracoes-ativar-fatores\">Ativar Autenticação de Dois Fatores</button>
+        <button type=\"submit\" id=\"configuracoes-ativar-fatores\">Ativar autenticação de dois fatores</button>
       </form>";
     } else {
       // <!-- Botão para desativar autenticação de dois fatores -->
       echo "
       <form action=\"desativar_dois_fatores.php\" method=\"post\">
         <input type=\"email\" name=\"email\" style=\"display: none;\" value=\"$email_usuario\">
-        <button type=\"submit\" id=\"configuracoes-ativar-fatores\">Desativar Autenticação de Dois Fatores</button>
+        <button type=\"submit\" id=\"configuracoes-ativar-fatores\">Desativar autenticação de dois fatores</button>
       </form>";
     }
 
@@ -69,6 +69,17 @@ try {
     </div>
     <a href="home.php">Voltar</a>
   </div>
+  <script>
+    function hideMessage(element, delay) {
+      setTimeout(function() {
+        element.textContent = '' // Limpa o conteúdo do elemento
+      }, delay)
+    }
+    const errorMessageDiv = document.getElementById('success-message')
+    if (errorMessageDiv.textContent !== '') {
+      hideMessage(errorMessageDiv, 5000)
+    }
+  </script>
 </body>
 
 </html>

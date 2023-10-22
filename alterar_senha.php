@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ?>
       </div>
       <button type="submit">Trocar Senha</button>
-      <a href="logout.php?voltar=usuario voltou">Voltar</a>
+      <a href="configuracoes.php">Voltar</a>
     </form>
   </div>
 

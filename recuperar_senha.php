@@ -1,7 +1,7 @@
 <?php
+session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $email_do_usuario = $_POST["email"];
-  session_start();
   include("funcoes.php");
   enviar_email_codigo_confirmacao($email_do_usuario);
 }

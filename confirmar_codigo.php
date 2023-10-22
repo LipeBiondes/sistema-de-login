@@ -1,7 +1,7 @@
 <?php
 session_start();
 $mensagem_de_erro = $_GET['error'] ?? '';
-$email_do_usuario = $_SESSION['email'] ?? '';
+$email_do_usuario = $_SESSION['email'];
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -14,9 +14,9 @@ $email_do_usuario = $_SESSION['email'] ?? '';
 
 <body>
   <?php
-  if ($email_do_usuario == '') {
+  if (empty($email_do_usuario)) {
     $messagem_de_erro = "Não conseguimos encontrar seu email, tente novamente.";
-    header("Location: recuperar_senha.php?error" . $mensagem_de_erro);
+    header("Location: recuperar_senha.php?error" . $messagem_de_erro);
   }
   ?>
   <div class="container">
@@ -31,6 +31,7 @@ $email_do_usuario = $_SESSION['email'] ?? '';
       }
       ?>
       <button type="submit">Verificar Código</button>
+      <a href="logout.php">Voltar</a>
     </form>
   </div>
 </body>

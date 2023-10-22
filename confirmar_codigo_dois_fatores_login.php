@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <head>
   <meta charset="UTF-8">
-  <title>Confirmar Código de Recuperação</title>
+  <title>Confirmar Código de Dois Fatores</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -81,9 +81,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
   ?>
   <div class="container">
-    <h1>Confirmar Código de Recuperação</h1>
+    <h1>Confirmar Código de Dois Fatores</h1>
     <form id="confirm-form" action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
-      <label for="codigo">Código de Recuperação:</label>
+      <label for="codigo">Código enviado:</label>
       <input type="text" id="codigo" name="codigo" required>
       <input type="hidden" name="email" value="<?= $email_do_usuario; ?>">
       <?php

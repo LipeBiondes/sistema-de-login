@@ -85,7 +85,7 @@ function enviar_email_codigo_confirmacao($email_do_usuario)
                     $mail->send();
 
                     // Redirecione o usuário para a página de confirmação
-                    $_SESSION["codigo-recuperacao"] = $codigo_recuperacao;
+                    $_SESSION['email'] = $email_do_usuario;
                     header("Location: confirmar_codigo.php");
                     session_write_close();
                     $stmt->close();
@@ -160,14 +160,14 @@ function enviar_email_dois_fatores($email_do_usuario)
                     //Content
                     $mail->isHTML(true);
                     // Assunto e corpo do e-mail
-                    $mail->Subject = 'Ativacao de Autenticacao de Dois Fatores';
+                    $mail->Subject = 'Ativacao da Autenticacao de Dois Fatores';
                     $mail->Body = '
           <!DOCTYPE html>
           <html>
           <head>
           </head>
           <body>
-            <h1 style="color: #007bff;">Ativação de Autenticação de Dois Fatores</h1>
+            <h1 style="color: #007bff;">Ativação da Autenticação de Dois Fatores</h1>
             <p>Olá!</p>
             <p>Você está a um passo de adicionar uma camada adicional de segurança à sua conta. Use o código de ativação abaixo para configurar a autenticação de dois fatores:</p>
             <div style="background-color: #f5f5f5; padding: 10px; border-radius: 5px; margin: 20px 0;">
