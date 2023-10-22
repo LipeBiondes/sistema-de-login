@@ -28,9 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Criptografar a senha
     $senha_criptografada = password_hash($senha_do_usuario, PASSWORD_DEFAULT);
 
+    $dois_fatores = "nao";
     // Inserir os dados na tabela de usuários
-    $stmt = $conn->prepare("INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $nome_do_usuario, $email_do_usuario, $senha_criptografada);
+    $stmt = $conn->prepare("INSERT INTO usuario (nome, email, senha,verificacao_dois_fatores) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $nome_do_usuario, $email_do_usuario, $senha_criptografada, $dois_fatores);
 
     if ($stmt->execute()) {
       // Procurar o usuário no banco
@@ -77,6 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta charset="UTF-8" />
   <title>Cadastro</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 </head>
 
 <body>
@@ -96,6 +98,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <label for="confirmar-senha">Confirmar Senha:</label>
       <input type="password" id="confirmar-senha" name="confirmar-senha" required />
 
+      <span id="showPassword" onclick="togglePasswordVisibility()" style="cursor:pointer;">
+        <i class="fas fa-eye"></i>
+      </span>
+      Mostar Senha
+
+
       <p id="error-message"><?= $msg ?></p>
 
       <button type="submit">Salvar</button>
@@ -103,6 +111,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <a href="index.html">Voltar</a>
   </div>
   <script>
+    // Função para mostrar/esconder a senha
+    function togglePasswordVisibility() {
+      var senhaField = document.getElementById("senha");
+      var confirmarSenhaField = document.getElementById("confirmar-senha");
+      var showPasswordIcon = document.querySelector("#showPassword i");
+
+      if (senhaField.type === "password") {
+        senhaField.type = "text";
+        confirmarSenhaField.type = "text";
+        showPasswordIcon.classList.remove("fa-eye");
+        showPasswordIcon.classList.add("fa-eye-slash");
+      } else {
+        senhaField.type = "password";
+        confirmarSenhaField.type = "password";
+        showPasswordIcon.classList.remove("fa-eye-slash");
+        showPasswordIcon.classList.add("fa-eye");
+      }
+    }
+
+
     document.getElementById("signup-form").addEventListener("submit", function(e) {
       var senha = document.getElementById("senha").value;
       var confirmarSenha = document.getElementById("confirmar-senha").value;

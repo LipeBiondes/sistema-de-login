@@ -79,6 +79,7 @@ a:hover {
   font-size: 14px;
   font-weight: bold;
   margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 #success-message {
@@ -170,4 +171,12 @@ p {
 
 .home-form {
   text-align: center;
+}
+
+#configuracoes-alterar-senha {
+  margin-bottom: 7.5px;
+}
+
+#configuracoes-ativar-fatores {
+  margin-top: 7.5px;
 }

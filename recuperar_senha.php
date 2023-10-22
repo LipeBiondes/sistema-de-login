@@ -1,3 +1,12 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $email_do_usuario = $_POST["email"];
+  session_start();
+  include("funcoes.php");
+  enviar_email_codigo_confirmacao($email_do_usuario);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -5,6 +14,7 @@
   <meta charset="UTF-8" />
   <title>Recuperar Senha</title>
   <link rel="stylesheet" href="style.css" />
+
 </head>
 
 <body>
@@ -14,7 +24,7 @@
   <div class="container">
     <h1>Recuperar Senha</h1>
 
-    <form id="recover-form" action="enviar_email.php" method="post">
+    <form id="recover-form" action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
       <label for="email">E-mail:</label>
       <input type="email" id="email" name="email" required />
       <div id="error-message" class="error-message">
