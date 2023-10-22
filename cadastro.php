@@ -2,6 +2,8 @@
 // Iniciar a sessão
 session_start();
 
+include("funcoes.php");
+
 $msg = ""; // Inicialize a mensagem
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $nome_do_usuario = $_POST["nome"];
@@ -19,14 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if ($check_result->num_rows > 0) {
 
-    $data = "LOG 8: O USUÁRIO " . $email_do_usuario . " TENTOU CADASTRAR UM EMAIL EXISTENTE AS " . date('d/m/Y H:i:s', time());
-    $data = $data . PHP_EOL;
-    $file = fopen("log.txt", "a"); // Abre o arquivo "arquivo.txt" para escrita (se não existir, ele será criado)        
-
-    if ($file) {
-      fwrite($file, $data);
-      fclose($file); // Fecha o arquivo após a escrita
-    }
+    cria_log('LOG7', $email_do_usuario);
 
     $msg = "Esse email já está cadastrado.";
   } else {
@@ -49,6 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["email"] = $email_do_usuario;
         $_SESSION["id"] = $id_usuario;
 
+        cria_log('LOG1', $email_do_usuario);
+
         // Redireciona para a página de login após o cadastro e inicia a sessão
         session_write_close();
         header("Location: home.php");
@@ -56,14 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     } else {
 
-      $data = "LOG 9: O USUÁRIO " . $email_do_usuario . " TENTOU CADASTRAR UM EMAIL EXISTENTE AS " . date('d/m/Y H:i:s', time());
-      $data = $data . PHP_EOL;
-      $file = fopen("log.txt", "a"); // Abre o arquivo "arquivo.txt" para escrita (se não existir, ele será criado)        
-
-      if ($file) {
-        fwrite($file, $data);
-        fclose($file); // Fecha o arquivo após a escrita
-      }
+      cria_log('LOG8', $email_do_usuario);
 
       $msg = "Erro ao cadastrar: Por favor tente novamente";
 

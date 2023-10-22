@@ -3,12 +3,12 @@ TABELA DE LOGS
 
 LOG 0: SUCESSO logou corretamente;
 LOG 1: SUCESSO cadastrou corretamente;
-LOG 3: SUCESSO recuperou senha corretamente;
-LOG 4: ERRO de senha incorreta;
-LOG 5: ERRO de usuario incorreto;
-LOG 6: ERRO ao recuperar senha, email inexistente no banco;
-LOG 7: ERRO ao recuperar senha, codigo incorreto;
-LOG 8: ERRO ao tentar cadastrar usuario, email existente no banco;
-LOG 9: ERRO ao tentar cadastrar usuario, falha ao inserir no banco;
+LOG 2: SUCESSO recuperou senha corretamente;
+LOG 3: ERRO de senha incorreta;
+LOG 4: ERRO de usuario incorreto;
+LOG 5: ERRO ao recuperar senha, email inexistente no banco;
+LOG 6: ERRO ao recuperar senha, codigo incorreto;
+LOG 7: ERRO ao tentar cadastrar usuario, email existente no banco;
+LOG 8: ERRO ao tentar cadastrar usuario, falha ao inserir no banco;
 
 #####################################################

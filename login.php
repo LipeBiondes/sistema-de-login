@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: home.php");
       } else {
 
-        cria_log('LOG4', $email_do_usuario);
+        cria_log('LOG3', $email_do_usuario);
 
         // Senhas não conferem
         unset($_SESSION['email']);
@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     } else {
 
-      cria_log('LOG5', $email_do_usuario);
+      cria_log('LOG4', $email_do_usuario);
 
       // Usuário não encontrado
       unset($_SESSION['email']);
