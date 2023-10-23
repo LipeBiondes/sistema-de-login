@@ -7,6 +7,140 @@ require '../sistema-de-login/PHPMailer/src/Exception.php';
 require '../sistema-de-login/PHPMailer/src/PHPMailer.php';
 require '../sistema-de-login/PHPMailer/src/SMTP.php';
 
+function salva_log($tipo_de_log, $email_do_usuario)
+{
+
+    date_default_timezone_set('America/Sao_Paulo');
+    $data_hora =  date('d/m/Y H:i:s', time());
+
+    try {
+        include("conexao.php");
+
+        // Verifique se o usuário existe no banco de dados
+        $query = "SELECT * FROM `usuario` WHERE `email` = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("s", $email_do_usuario);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $id_user = 0;
+
+        if ($result->num_rows > 0) {
+
+            $dados_do_usuario = $result->fetch_assoc();
+            $id_user = $dados_do_usuario['id'];
+        }
+
+        // Inserir os dados na tabela de usuários
+        $stmt = $conn->prepare("INSERT INTO `logs`(`id_user`, `log`, `data_hora`) VALUES ('$id_user','$tipo_de_log','$data_hora')");
+        $stmt->execute();
+    } catch (Exception $e) {
+
+        echo '' . $e->getMessage() . '';
+    }
+}
+
+function cria_log($tipo_de_log, $email_do_usuario)
+{
+    date_default_timezone_set('America/Sao_Paulo');
+
+    if ($tipo_de_log == 'LOG_USUARIO_LOGOU_COM_SUCESSO') {
+
+        $data = "LOG 0: O USUÁRIO " . $email_do_usuario . " LOGOU COM SUCESSO AS " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 0: O USUARIO LOGOU COM SUCESSO';
+    }
+    if ($tipo_de_log == 'LOG_USUARIO_CADASTROU_COM_SUCESSO') {
+
+        $data = "LOG 1: O USUÁRIO " . $email_do_usuario . " SE CADASTROU COM SUCESSO AS " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 1: O USUÁRIO SE CADASTROU COM SUCESSO';
+    }
+    if ($tipo_de_log == 'LOG_USUARIO_RECUPEROU_SENHA_COM_SUCESSO') {
+
+        $data = "LOG 2: O USUÁRIO " . $email_do_usuario . " RECUPEROU A SENHA COM SUCESSO AS " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 2: O USUÁRIO RECUPEROU A SENHA COM SUCESSO';
+    }
+    if ($tipo_de_log == 'LOG_USUARIO_TENTOU_LOGAR_SENHA_INCORRETA') {
+
+        $data = "LOG 3: O USUÁRIO " . $email_do_usuario . " TENTOU LOGAR COM A SENHA INCORRETA AS " . date('d/m/Y H:i:s', time());
+        $data_bd = "LOG 3: O USUÁRIO TENTOU LOGAR COM A SENHA INCORRETA";
+    }
+    if ($tipo_de_log == 'LOG_USUARIO_TENTOU_LOGAR_COM_EMAIL_INEXISTENTE') {
+
+        $data = "LOG 4: O USUÁRIO " . $email_do_usuario . " TENTOU LOGAR COM EMAIL INEXISTENTE " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 4: O USUÁRIO TENTOU LOGAR COM EMAIL INEXISTENTE';
+    }
+    if ($tipo_de_log == 'LOG_USUARIO_TENTOU_RECUPERAR_SENHA_COM_EMAIL_INEXISTENTE') {
+
+        $data = "LOG 5: O USUÁRIO " . $email_do_usuario . " TENTOU RECUPERAR SENHA COM UM EMAIL EXISTENTE AS " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 5: O USUÁRIO TENTOU RECUPERAR SENHA COM UM EMAIL EXISTENTE';
+    }
+    if ($tipo_de_log == 'LOG_USUARIO_TENTOU_RECUPERAR_SENHA_CODIGO_INCORRETO') {
+
+        $data = "LOG 6: O USUÁRIO " . $email_do_usuario . " TENTOU RECUPERAR SENHA COM CODIGO INCORRETO AS " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 6: O USUÁRIO TENTOU RECUPERAR SENHA COM CODIGO INCORRETO';
+    }
+    if ($tipo_de_log == 'LOG_USUARIO_TENTOU_CADASTRAR_EMAIL_EXISTENTE') {
+
+        $data = "LOG 7: O USUÁRIO " . $email_do_usuario . " TENTOU CADASTRAR UM EMAIL JÁ EXISTENTE AS " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 7: O USUÁRIO TENTOU CADASTRAR UM EMAIL JÁ EXISTENTE';
+    }
+    if ($tipo_de_log == 'LOG_USUARIO_TENTOU_CADASTRAR_MAS_FALHA_AO_INSERIR_NO_BANCO') {
+
+        $data = "LOG 8: O USUÁRIO " . $email_do_usuario . " TENTOU CADASTRAR NO BANCO E HOUVE FALHA AS " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 8: O USUÁRIO TENTOU CADASTRAR NO BANCO E HOUVE FALHA';
+    }
+    if ($tipo_de_log == 'LOG_USUARIO_TROCOU_SENHA_COM_SUCESSO') {
+
+        $data = "LOG 9: O USUÁRIO " . $email_do_usuario . " TROCOU A SENHA COM SUCESSO AS " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 9: O USUÁRIO TROCOU A SENHA COM SUCESSO';
+    }
+    if ($tipo_de_log == 'LOG_USUARIO_FALHOU_AO_TROCAR_SENHA') {
+
+        $data = "LOG 10: O USUÁRIO " . $email_do_usuario . " FALHOU AO TROCAR A SENHA AS " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 10: O USUÁRIO TROCOU A SENHA COM SUCESSO';
+    }
+    if ($tipo_de_log == 'LOG_USUARIO_DESLOGOU_COM_SUCESSO') {
+
+        $data = "LOG 11: O USUÁRIO " . $email_do_usuario . " DESLOGOU COM SUCESSO AS " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 11: O USUÁRIO DESLOGOU COM SUCESSO';
+    }
+    if ($tipo_de_log == "LOG_USUARIO_ENVIOU_CODIGO_PARA_EMAIL_MAS_DESISTIU") {
+
+        $data = "LOG 12: O USUÁRIO " . $email_do_usuario . " ENVIOU O CODIGO  DE RECUPERACAO PARA O EMAIL MAS DESISTIU AS " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 12: O USUÁRIO ENVIOU O CODIGO PARA O EMAIL MAS DESISTIU';
+    }
+    if ($tipo_de_log == "LOG_USUARIO_ENVIOU_CODIGO_DE_RECUPERACAO_PARA_EMAIL") {
+
+        $data = "LOG 13: O USUÁRIO " . $email_do_usuario . " ENVIOU O CODIGO DE RECUPERACAO PARA O EMAIL AS " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 13: O USUÁRIO ENVIOU O CODIGO DE RECUPERACAO PARA O EMAIL';
+    }
+    if ($tipo_de_log == "LOG_USUARIO_ENVIOU_EMAIL_PARA_ATIVAR_DOIS_FATORES") {
+
+        $data = "LOG 14: O USUÁRIO " . $email_do_usuario . " ENVIOU O EMAIL PARA ATIVAR A AUTENTICACAO DE DOIS FATORES AS " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 14: O USUÁRIO ENVIOU O EMAIL PARA ATIVAR A AUTENTICACAO DE DOIS FATORES';
+    }
+    if ($tipo_de_log == "LOG_USUARIO_TENTOU_LOGAR_COM_DOIS_FATORES_ATIVADO") {
+
+        $data = "LOG 15: O USUÁRIO " . $email_do_usuario . " TENTOU LOGAR COM A AUTENTICACAO DE DOIS FATORES ATIVADA AS " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 15: O USUÁRIO TENTOU LOGAR COM A AUTENTICACAO DE DOIS FATORES ATIVADA';
+    }
+    if ($tipo_de_log == "LOG_USUARIO_DESATIVOU_LOGIN_COM_DOIS_FATORES") {
+
+        $data = "LOG 16: O USUÁRIO " . $email_do_usuario . " DESATIVOU A AUTENTICACAO DE DOIS FATORES AS " . date('d/m/Y H:i:s', time());
+        $data_bd = 'LOG 16: O USUÁRIO DESATIVOU A AUTENTICACAO DE DOIS FATORES';
+    }
+
+    $data = $data . PHP_EOL;
+    $file = fopen("log.txt", "a"); // Abre o arquivo "arquivo.txt" para escrita (se não existir, ele será criado)        
+
+    fwrite($file, $data);
+    fclose($file); // Fecha o arquivo após a escrita
+
+    if ($tipo_de_log != 'LOG_USUARIO_TENTOU_CADASTRAR_MAS_FALHA_AO_INSERIR_NO_BANCO') {
+        salva_log($data_bd, $email_do_usuario);
+    }
+}
+
 function enviar_email_codigo_confirmacao($email_do_usuario)
 {
     try {
@@ -86,6 +220,7 @@ function enviar_email_codigo_confirmacao($email_do_usuario)
 
                     // Redirecione o usuário para a página de confirmação
                     $_SESSION['email'] = $email_do_usuario;
+                    cria_log("LOG_USUARIO_ENVIOU_CODIGO_DE_RECUPERACAO_PARA_EMAIL", $email_do_usuario);
                     header("Location: confirmar_codigo.php");
                     session_write_close();
                     $stmt->close();
@@ -184,6 +319,8 @@ function enviar_email_dois_fatores($email_do_usuario)
 
                     // Redirecione o usuário para a página de confirmação
                     $_SESSION["codigo-recuperacao"] = $codigo_recuperacao_dois_fatores;
+                    cria_log("LOG_USUARIO_ENVIOU_EMAIL_PARA_ATIVAR_DOIS_FATORES", $email_do_usuario);
+
                     header("Location: confirmar_codigo_dois_fatores.php");
                     session_write_close();
                     $stmt->close();
@@ -283,6 +420,9 @@ function enviar_email_dois_fatores_login($email_do_usuario)
 
                     // Redirecione o usuário para a página de confirmação
                     $_SESSION["codigo-recuperacao"] = $codigo_recuperacao_dois_fatores;
+
+                    cria_log("LOG_USUARIO_TENTOU_LOGAR_COM_DOIS_FATORES_ATIVADO", $email_do_usuario);
+
                     header("Location: confirmar_codigo_dois_fatores_login.php");
                     session_write_close();
                     $stmt->close();
@@ -299,118 +439,5 @@ function enviar_email_dois_fatores_login($email_do_usuario)
     } catch (Exception $e) {
         header("Location: index.html?ept");
         session_destroy();
-    }
-}
-
-function salva_log($log, $email)
-{
-
-    date_default_timezone_set('America/Sao_Paulo');
-    $data_hora =  date('d/m/Y H:i:s', time());
-
-    try {
-        include("conexao.php");
-
-        // Verifique se o usuário existe no banco de dados
-        $query = "SELECT * FROM `usuario` WHERE `email` = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        $id_user = 0;
-
-        if ($result->num_rows > 0) {
-
-            $dados_do_usuario = $result->fetch_assoc();
-            $id_user = $dados_do_usuario['id'];
-        }
-
-        // Inserir os dados na tabela de usuários
-        $stmt = $conn->prepare("INSERT INTO `logs`(`id_user`, `log`, `data_hora`) VALUES ('$id_user','$log','$data_hora')");
-        // $stmt->bind_param("sss", $id_user, $log, $data_hora);
-        $stmt->execute();
-    } catch (Exception $e) {
-
-        echo '' . $e->getMessage() . '';
-    }
-}
-
-function cria_log($log, $email)
-{
-
-    /*########################################################################
-    ## TABELA DE LOGS                                                       ##
-    ##                                                                      ##
-    ## LOG 0: SUCESSO logou corretamente;                                   ##
-    ## LOG 1: SUCESSO cadastrou corretamente;                               ##
-    ## LOG 2: SUCESSO recuperou senha corretamente;                         ##
-    ## LOG 3: ERRO de senha incorreta;                                      ##
-    ## LOG 4: ERRO de usuario incorreto;                                    ##
-    ## LOG 5: ERRO ao recuperar senha, email inexistente no banco;          ##
-    ## LOG 6: ERRO ao recuperar senha, codigo incorreto;                    ##
-    ## LOG 7: ERRO ao tentar cadastrar usuario, email existente no banco;   ##
-    ## LOG 8: ERRO ao tentar cadastrar usuario, falha ao inserir no banco;  ##
-    ## LOG 9: SUCESSO ao trocar senha;                                      ##
-    ## LOG 10: ERRO ao trocar senha;                                        ##
-    ##                                                                      ##
-    ########################################################################*/
-
-    date_default_timezone_set('America/Sao_Paulo');
-
-    if ($log == 'LOG0') {
-
-        $data = "LOG 0: O USUÁRIO " . $email . " LOGOU COM SUCESSO AS " . date('d/m/Y H:i:s', time());
-        $data_bd = 'LOG 0: O USUARIO LOGOU COM SUCESSO';
-    } elseif ($log == 'LOG1') {
-
-        $data = "LOG 1: O USUÁRIO " . $email . " SE CADASTROU COM SUCESSO AS " . date('d/m/Y H:i:s', time());
-        $data_bd = 'LOG 1: O USUÁRIO SE CADASTROU COM SUCESSO';
-    } elseif ($log == 'LOG2') {
-
-        $data = "LOG 2: O USUÁRIO " . $email . " RECUPEROU A SENHA COM SUCESSO AS " . date('d/m/Y H:i:s', time());
-        $data_bd = 'LOG 2: O USUÁRIO RECUPEROU A SENHA COM SUCESSO';
-    } elseif ($log == 'LOG3') {
-
-        $data = "LOG 3: O USUÁRIO " . $email . " TENTOU LOGAR COM A SENHA INCORRETA AS " . date('d/m/Y H:i:s', time());
-        $data_bd = "LOG 3: O USUÁRIO TENTOU LOGAR COM A SENHA INCORRETA";
-    } elseif ($log == 'LOG4') {
-
-        $data = "LOG 4: O USUÁRIO " . $email . " TENTOU LOGAR COM EMAIL INEXISTENTE " . date('d/m/Y H:i:s', time());
-        $data_bd = 'LOG 4: O USUÁRIO TENTOU LOGAR COM EMAIL INEXISTENTE';
-    } elseif ($log == 'LOG5') {
-
-        $data = "LOG 5: O USUÁRIO " . $email . " TENTOU RECUPERAR SENHA COM UM EMAIL EXISTENTE AS " . date('d/m/Y H:i:s', time());
-        $data_bd = 'LOG 5: O USUÁRIO TENTOU RECUPERAR SENHA COM UM EMAIL EXISTENTE';
-    } elseif ($log == 'LOG6') {
-
-        $data = "LOG 6: O USUÁRIO " . $email . " TENTOU RECUPERAR SENHA COM CODIGO INCORRETO AS " . date('d/m/Y H:i:s', time());
-        $data_bd = 'LOG 6: O USUÁRIO TENTOU RECUPERAR SENHA COM CODIGO INCORRETO';
-    } elseif ($log == 'LOG7') {
-
-        $data = "LOG 7: O USUÁRIO " . $email . " TENTOU CADASTRAR UM EMAIL JÁ EXISTENTE AS " . date('d/m/Y H:i:s', time());
-        $data_bd = 'LOG 7: O USUÁRIO TENTOU CADASTRAR UM EMAIL JÁ EXISTENTE';
-    } elseif ($log == 'LOG8') {
-
-        $data = "LOG 8: O USUÁRIO " . $email . " TENTOU CADASTRAR NO BANCO E HOUVE FALHA AS " . date('d/m/Y H:i:s', time());
-        $data_bd = 'LOG 8: O USUÁRIO TENTOU CADASTRAR NO BANCO E HOUVE FALHA';
-    } elseif ($log == 'LOG9') {
-
-        $data = "LOG 9: O USUÁRIO " . $email . " TROCOU A SENHA COM SUCESSO AS " . date('d/m/Y H:i:s', time());
-        $data_bd = 'LOG 9: O USUÁRIO TROCOU A SENHA COM SUCESSO';
-    } elseif ($log == 'LOG10') {
-
-        $data = "LOG 10: O USUÁRIO " . $email . " FALHOU AO TROCAR A SENHA AS " . date('d/m/Y H:i:s', time());
-        $data_bd = 'LOG 10: O USUÁRIO TROCOU A SENHA COM SUCESSO';
-    }
-
-    $data = $data . PHP_EOL;
-    $file = fopen("log.txt", "a"); // Abre o arquivo "arquivo.txt" para escrita (se não existir, ele será criado)        
-
-    fwrite($file, $data);
-    fclose($file); // Fecha o arquivo após a escrita
-
-    if ($log != 'LOG8') {
-        salva_log($data_bd, $email);
     }
 }

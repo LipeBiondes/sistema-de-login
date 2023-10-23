@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       if ($query->execute()) {
 
-        cria_log('LOG9', $email_do_usuario);
+        cria_log('LOG_USUARIO_TROCOU_SENHA_COM_SUCESSO', $email_do_usuario);
 
         // Redirecione para a página inicial após a atualização bem-sucedida
         $_SESSION["id"] = $id_do_usuario;
@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         session_write_close();
       } else {
 
-        cria_log('LOG10', $email_do_usuario);
+        cria_log('LOG_USUARIO_FALHOU_AO_TROCAR_SENHA', $email_do_usuario);
 
         $messagem_de_erro = "Não foi possível alterar a senha. Por favor, tente novamente.";
       }

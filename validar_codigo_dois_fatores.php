@@ -20,7 +20,7 @@ if ($conn) {
   $result = $stmt->get_result();
 
   if ($result->num_rows === 0) {
-    cria_log('LOG5', $email_do_usuario);
+    cria_log('LOG_USUARIO_TENTOU_RECUPERAR_SENHA_COM_EMAIL_INEXISTENTE', $email_do_usuario);
 
     // O usuário não foi encontrado no banco de dados
     $mensagem_de_erro = "Ocorreu um erro, tente novamente.";
@@ -31,7 +31,7 @@ if ($conn) {
     $codigo_recuperado_banco = $row["codigo_verificacao_dois_fatores"];
 
     if (password_verify($codigo_recuperacao_usuario, $codigo_recuperado_banco)) {
-      cria_log('LOG2', $email_do_usuario);
+      cria_log('LOG_USUARIO_RECUPEROU_SENHA_COM_SUCESSO', $email_do_usuario);
 
       $query = "UPDATE usuario SET verificacao_dois_fatores = 'sim', codigo_verificacao_dois_fatores = NULL WHERE email = ?";
       $stmt = $conn->prepare($query);
@@ -50,7 +50,7 @@ if ($conn) {
       $conn->close();
       exit();
     } else {
-      cria_log('LOG6', $email_do_usuario);
+      cria_log('LOG_USUARIO_TENTOU_RECUPERAR_SENHA_CODIGO_INCORRETO', $email_do_usuario);
 
       // O código inserido é inválido, defina a mensagem de erro
       header("Location: confirmar_codigo_dois_fatores.php?message=Código de recuperação inválido. Tente novamente.");

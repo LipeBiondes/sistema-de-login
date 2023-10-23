@@ -31,7 +31,7 @@ $email_do_usuario = $_SESSION['email'];
       }
       ?>
       <button type="submit">Verificar Código</button>
-      <a href="logout.php">Voltar</a>
+      <a href="logout.php?voltar=O usuario voltou para a pagina inicial">Voltar</a>
     </form>
   </div>
 </body>

@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt->affected_rows > 0) {
 
-          cria_log('LOG9', $email_do_usuario);
+          cria_log('LOG_USUARIO_TROCOU_SENHA_COM_SUCESSO', $email_do_usuario);
 
           // Senha alterada com sucesso, redirecione o usuário
           unset($_SESSION["email"]);
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           header("Location: index.html?sas");
         } else {
 
-          cria_log('LOG10', $email_do_usuario);
+          cria_log('LOG_USUARIO_FALHOU_AO_TROCAR_SENHA', $email_do_usuario);
 
           $messagem_de_erro = "Ocorreu um erro ao alterar a senha. Tente novamente.";
         }
@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
   } catch (Exception $e) {
 
-    cria_log('LOG10', $email_do_usuario);
+    cria_log('LOG_USUARIO_FALHOU_AO_TROCAR_SENHA', $email_do_usuario);
 
     header("Location: index.html?ept");
   }
