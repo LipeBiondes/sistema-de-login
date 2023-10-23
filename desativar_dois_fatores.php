@@ -1,6 +1,7 @@
 <?php
 include("verificar_sessao.php");
 include("conexao.php");
+include("funcoes.php");
 
 $email_do_usuario = $_SESSION["email"];
 
@@ -14,6 +15,7 @@ if ($result->num_rows === 0) {
 } else {
   // O código inserido pelo usuário é válido então redireciono o usuário para a página configuracoes
   $messagem = "Desativação de dois fatores realizada com sucesso.";
+  cria_log("LOG_USUARIO_DESATIVOU_LOGIN_COM_DOIS_FATORES", $email_do_usuario);
   header("Location: configuracoes.php?message=" . $messagem);
   $stmt->close();
   $conn->close();

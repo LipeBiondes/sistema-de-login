@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   if ($check_result->num_rows > 0) {
 
-    cria_log('LOG7', $email_do_usuario);
+    cria_log('LOG_USUARIO_TENTOU_CADASTRAR_EMAIL_EXISTENTE', $email_do_usuario);
 
     $msg = "Esse email já está cadastrado.";
   } else {
@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["email"] = $email_do_usuario;
         $_SESSION["id"] = $id_usuario;
 
-        cria_log('LOG1', $email_do_usuario);
+        cria_log('LOG_USUARIO_CADASTROU_COM_SUCESSO', $email_do_usuario);
 
         // Redireciona para a página de login após o cadastro e inicia a sessão
         session_write_close();
@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     } else {
 
-      cria_log('LOG8', $email_do_usuario);
+      cria_log('LOG_USUARIO_TENTOU_CADASTRAR_MAS_FALHA_AO_INSERIR_NO_BANCO', $email_do_usuario);
 
       $msg = "Erro ao cadastrar: Por favor tente novamente";
 

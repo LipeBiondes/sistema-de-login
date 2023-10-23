@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $_SESSION["email"] = $email_do_usuario;
           enviar_email_dois_fatores_login($email_do_usuario);
         } else {
-          cria_log('LOG0', $email_do_usuario);
+          cria_log('LOG_USUARIO_LOGOU_COM_SUCESSO', $email_do_usuario);
 
           $_SESSION["email"] = $email_do_usuario;
           $_SESSION["id"] = $dados_usuario["id"];
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
       } else {
 
-        cria_log('LOG3', $email_do_usuario);
+        cria_log('LOG_USUARIO_TENTOU_LOGAR_SENHA_INCORRETA', $email_do_usuario);
 
         // Senhas não conferem
         unset($_SESSION['email']);
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     } else {
 
-      cria_log('LOG4', $email_do_usuario);
+      cria_log('LOG_USUARIO_TENTOU_LOGAR_COM_EMAIL_INEXISTENTE', $email_do_usuario);
 
       // Usuário não encontrado
       unset($_SESSION['email']);
