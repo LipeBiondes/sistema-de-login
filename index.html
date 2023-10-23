@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <title>Login</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    />
   </head>
 
   <body>
@@ -14,8 +18,18 @@
         <label for="username">Usuário:</label>
         <input type="text" id="username" name="username" required />
 
+        <!-- <label for="password">Senha:</label>
+      <input type="password" id="password" name="password" required /> -->
+
         <label for="password">Senha:</label>
         <input type="password" id="password" name="password" required />
+        <span
+          id="showPassword"
+          onclick="togglePasswordVisibility()"
+          style="cursor: pointer"
+          ><i class="fas fa-eye"></i
+        ></span>
+        Mostrar senha
 
         <div
           id="error-message"
@@ -36,6 +50,22 @@
     </div>
 
     <script>
+      // Função para mostrar/esconder a senha
+      function togglePasswordVisibility() {
+        var passwordField = document.getElementById('password')
+        var showPasswordIcon = document.querySelector('#showPassword i')
+
+        if (passwordField.type === 'password') {
+          passwordField.type = 'text'
+          showPasswordIcon.classList.remove('fa-eye')
+          showPasswordIcon.classList.add('fa-eye-slash')
+        } else {
+          passwordField.type = 'password'
+          showPasswordIcon.classList.remove('fa-eye-slash')
+          showPasswordIcon.classList.add('fa-eye')
+        }
+      }
+
       function hideMessage(element, delay) {
         setTimeout(function () {
           element.textContent = '' // Limpa o conteúdo do elemento
@@ -47,6 +77,7 @@
 
       const urlParams = new URLSearchParams(window.location.search)
       const erroSenhaNaoCorresponde = urlParams.get('snc')
+      const erroUsuarioNaoLogou = urlParams.get('ncl')
       const erroEmailNaoEncontrado = urlParams.get('ene')
       const erroProblemasTecnicos = urlParams.get('ept')
       const erroUsuarioNaoLogado = urlParams.get('unl')
@@ -91,6 +122,13 @@
 
       if (erroSenhaNaoCorresponde == '') {
         errorMessageDiv.textContent = 'Senha ou usuário incorretos.'
+        errorMessageDiv.style.display = 'block'
+        hideMessage(errorMessageDiv, 5000)
+      }
+
+      if (erroUsuarioNaoLogou == '') {
+        errorMessageDiv.textContent =
+          'Não conseguimos fazer o seu login, tente novamente mais tarde.'
         errorMessageDiv.style.display = 'block'
         hideMessage(errorMessageDiv, 5000)
       }

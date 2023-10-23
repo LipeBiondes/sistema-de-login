@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include("conexao.php");
 
     // Procurar o usuário no banco
-    $query = $conn->prepare("SELECT id, nome, senha FROM usuario WHERE email = ?");
+    $query = $conn->prepare("SELECT * FROM usuario WHERE email = ?");
     $query->bind_param("s", $email_do_usuario);
     $query->execute();
     $resultado = $query->get_result();
@@ -23,15 +23,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
       if (password_verify($senha_do_usuario, $senha_criptografada)) {
 
-        cria_log('LOG0', $email_do_usuario);
+        if ($dados_usuario['verificacao_dois_fatores'] == "sim") {
+          $_SESSION["email"] = $email_do_usuario;
+          enviar_email_dois_fatores_login($email_do_usuario);
+        } else {
+          cria_log('LOG0', $email_do_usuario);
 
-        $_SESSION["email"] = $email_do_usuario;
-        $_SESSION["id"] = $dados_usuario["id"];
-        session_write_close();
-        header("Location: home.php");
+          $_SESSION["email"] = $email_do_usuario;
+          $_SESSION["id"] = $dados_usuario["id"];
+          session_write_close();
+          header("Location: home.php");
+        }
       } else {
 
-        cria_log('LOG4', $email_do_usuario);
+        cria_log('LOG3', $email_do_usuario);
 
         // Senhas não conferem
         unset($_SESSION['email']);
@@ -41,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     } else {
 
-      cria_log('LOG5', $email_do_usuario);
+      cria_log('LOG4', $email_do_usuario);
 
       // Usuário não encontrado
       unset($_SESSION['email']);
