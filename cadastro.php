@@ -105,12 +105,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
       <p id="error-message"><?= $msg ?></p>
+      <label for="checkbox" id="label-termos-condicoes">
+        Eu aceito os
+        <a id="a-termos-condicoes" href="termos_e_condicoes.html" target="_blank">termos e condições</a>
+        <input type="checkbox" id="input-termos-condicoes" name="checkbox" required />
+      </label>
 
       <button type="submit">Salvar</button>
     </form>
     <a href="index.html">Voltar</a>
   </div>
   <script>
+    function hideMessage() {
+      setTimeout(function() {
+        document.getElementById("error-message").style.display = "none";
+      }, 5000); // 5 segundos
+    }
+
+
     // Função para mostrar/esconder a senha
     function togglePasswordVisibility() {
       var senhaField = document.getElementById("senha");
@@ -142,11 +154,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       if (senha !== confirmarSenha) {
         errorMessage.textContent = "As senhas não coincidem.";
         errorMessage.style.display = "block"; // Exibir a mensagem de erro
+        hideMessage();
         e.preventDefault();
       } else {
         if (!senha.match(senhaRegex)) {
           errorMessage.textContent = "A senha deve conter no mínimo 8 caracteres, incluindo pelo menos uma letra maiúscula e uma letra minúscula.";
           errorMessage.style.display = "block"; // Exibir a mensagem de erro
+          hideMessage();
           e.preventDefault();
         } else {
           errorMessage.textContent = ""; // Limpar a mensagem de erro
