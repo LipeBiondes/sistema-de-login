@@ -105,18 +105,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
       <p id="error-message"><?= $msg ?></p>
+      <label for="checkbox" id="label-termos-condicoes">
+        Eu aceito os
+        <a id="a-termos-condicoes" href="termos_e_condicoes.html" target="_blank">termos e condições</a>
+        <input type="checkbox" id="input-termos-condicoes" name="checkbox" required />
+      </label>
 
       <button type="submit">Salvar</button>
     </form>
     <a href="index.html">Voltar</a>
   </div>
   <script>
-
-  function hideMessage(){
-    setTimeout(function(){
-      document.getElementById("error-message").style.display = "none";
-    }, 5000); // 5 segundos
-  }
+    function hideMessage() {
+      setTimeout(function() {
+        document.getElementById("error-message").style.display = "none";
+      }, 5000); // 5 segundos
+    }
 
 
     // Função para mostrar/esconder a senha
