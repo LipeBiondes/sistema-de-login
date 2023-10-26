@@ -144,7 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
 
       // Use uma expressão regular para verificar se a senha atende aos critérios
-      var regex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+      var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
       if (!regex.test(novaSenha)) {
         var errorMessage = "A senha deve conter pelo menos 8 caracteres, incluindo uma letra maiúscula e uma letra minúscula.";
         document.getElementById('error-message').textContent = errorMessage;
