@@ -110,6 +110,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a id="a-termos-condicoes" href="termos_e_condicoes.html" target="_blank">termos e condições</a>
         <input type="checkbox" id="input-termos-condicoes" name="checkbox" required />
       </label>
+      <p style="font-size: 16px; color: #333; background-color: #f9f9f9; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+        A senha deve conter no mínimo 8 caracteres, pelo menos um símbolo, um número e uma letra maiúscula.
+      </p>
 
       <button type="submit">Salvar</button>
     </form>
@@ -149,7 +152,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       var errorMessage = document.getElementById("error-message");
 
       // Expressão regular para validar a senha
-      var senhaRegex = /^(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+      var senhaRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
+
 
       if (senha !== confirmarSenha) {
         errorMessage.textContent = "As senhas não coincidem.";
